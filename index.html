@@ -1,0 +1,528 @@
+<html manifest="gravity.manifest">
+<head>
+<title>Woah</title>
+<link rel="apple-touch-icon-precomposed" href="touch-icon-iphone.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="touch-icon-iphone4.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="viewport" content="initial-scale=.5, maximum-scale=.5, user-scalable=no, width=device-width">
+<script src="/gravity/jquery-1.5.1.min.js"></script>
+<script src="/gravity/box2dallcompressed.js"></script>
+<style type="text/css">
+#console {position:fixed;top:0;left:0;color:#fff;padding:5px;font-family:arial;font-size:19px;z-index:9999;}
+#loading {width:640px;height:920px;position:fixed;background:#000;z-index:10000;left:0;top:0;}
+#loading img {margin:411px 0 0 37px;}
+#addtohomescreen {width:640px;height:920px;position:fixed;background:rgba(0,0,0,.75);z-index:9999;left:0;top:0;}
+#addto1 {position:absolute;top:234px;left:174px;}
+#addto2 {position:absolute;top:31px;left:336px;}
+#rotatemessage {width:640px;height:920px;position:fixed;background:#000;z-index:10000;left:0;top:0;display:none;}
+#rotatemessage img {margin:205px 0 0 226px;}
+html, body {margin:0;padding:0;}
+body {background-color:#000;color:#fff;font-family:Helvetica;}
+#pages {height:920px;width:640px;overflow:hidden;position:relative;}
+#pagesinner {height:920px;width:2560px;}
+.page {width:640px;height:920px;float:left;position:relative;}
+.button {width:114px;position:absolute;text-align:center;font-size:22px;font-weight:bold;white-space:nowrap;}
+.button img {position:absolute;}
+.button p {margin-top:7px;position:relative;left:-56px;top:114px;width:200%;}
+.button1 {left:34px;top:27px;}
+.button2 {left:186px;top:27px;}
+.button3 {left:340px;top:27px;}
+.button4 {left:492px;top:27px;}
+.button5 {left:34px;top:203px;}
+.button6 {left:186px;top:203px;}
+.button7 {left:340px;top:203px;}
+.button8 {left:492px;top:203px;}
+.button9 {left:34px;top:379px;}
+.button10 {left:186px;top:379px;}
+.button11 {left:340px;top:379px;}
+.button12 {left:492px;top:379px;}
+.button13 {left:34px;top:555px;}
+.button14 {left:186px;top:555px;}
+.button15 {left:340px;top:555px;}
+.button16 {left:492px;top:555px;}
+#dock {position:absolute;left:0;top:728px;width:640px;height:192px;overflow:hidden;}
+#dockimg {position:absolute;bottom:0;left:0;width:640px;height:172px;background-image:url('images/dockempty.png');}
+#dock .button {top:35px;}
+#dock .buttonbadged {top:20px;}
+.dockhilite {position:absolute;top:35px;opacity:0;}
+.dockhilitebadged {top:20px;}
+#dockhilite1, .dockbutton1, .buttonshadow1 {left:34px;}
+#dockhilite2, .dockbutton2, .buttonshadow2 {left:186px;}
+#dockhilite3, .dockbutton3, .buttonshadow3 {left:340px;}
+#dockhilite4, .dockbutton4, .buttonshadow4 {left:492px;}
+#dock p {z-index:10;text-shadow:rgba(0,0,0,.5) 0 3px 2px;}
+#dock .buttonbadged p {top:129px;}
+#dock .flipped {position:absolute;top:116px;left:0;opacity:.2;/*-webkit-transform: scaleY(-1);*/}
+#dock .buttonbadged .flipped {top:131px;}
+#dock .buttonshadow {width:114px;height:114px;position:absolute;background:#000;top:38px;border-radius:21px;}
+#pagemarkers {width:640px;height:15px;position:absolute;top:724px;left:0;text-align:center;}
+#searchicon {background:url('images/searchicon.png');width:15px;height:15px;position:absolute;left:276px;}
+.pagemarker {background:url('images/pagemarker.png');width:12px;height:12px;position:absolute;}
+#pagemarker1 {left:312px;}
+#pagemarker2 {left:342px;background-position:0 12px;}
+</style>
+</head>
+<body>
+<div id=loading><img src="images/loading.gif"></div>
+<div id=addtohomescreen><img src="images/addtohomescreen-gravity.gif" id=addto1><img src="images/addtohomescreen-gravity-landscape.gif" id=addto2></div>
+<div id=rotatemessage><img src="images/rotatephone.gif"></div>
+<div id=pages><div id=pagesinner>
+	<div class=page><img src="images/searchpageinput.jpg"></div>
+	<div class=page id=page1>
+		<div class="button button1"><img src="images/icon5.png"><p>App Store</p></div>
+		<div class="button button2"><img src="images/icon12.png"><p>Clock</p></div>
+		<div class="button button3"><img src="images/icon27.png"><p>Weather</p></div>
+		<div class="button button4"><img src="images/icon3.png"><p>Settings</p></div>
+		<div class="button button5"><img src="images/icon20.png"><p>YouTube</p></div>
+		<div class="button button6"><img src="images/icon37.png"><p>Angry Birds</p></div>
+		<div class="button button7"><img src="images/icon25.png"><p>iTunes</p></div>
+		<div class="button button8"><img src="images/icon18.png"><p>Camera</p></div>
+		<div class="button button9"><img src="images/icon13.png"><p>Videos</p></div>
+		<div class="button button10"><img src="images/icon34.png"><p>Music</p></div>
+		<div class="button button11"><img src="images/icon7.png"><p>Facebook</p></div>
+		<div class="button button12"><img src="images/icon4.png"><p>Photos</p></div>
+		<div class="button button13"><img src="images/icon1.png"><p>Maps</p></div>
+		<div class="button button14"><img src="images/icon2.png"><p>Safari</p></div>
+		<div class="button button15"><img src="images/icon35.png"><p>Instagram</p></div>
+		<div class="button button16"><img src="images/icon36.png"><p>Cut the Rope</p></div>
+	</div>
+	<div class=page>
+		<div class="button button1"><img src="images/icon17.png"><p>Shazam</p></div>
+		<div class="button button2"><img src="images/icon16.png"><p>Yelp</p></div>
+		<div class="button button3"><img src="images/icon15.png"><p>Fandango</p></div>
+		<div class="button button4"><img src="images/icon9.png"><p>Twitter</p></div>
+		<div class="button button5"><img src="images/icon6.png"><p>Pandora</p></div>
+		<div class="button button6"><img src="images/icon8.png"><p>Find Friends</p></div>
+		<div class="button button7"><img src="images/icon38.png"><p>Business</p></div>
+	</div>
+</div></div>
+<div id=dock>
+	<div id=dockimg></div>
+	<div class="buttonshadow buttonshadow1"></div>
+	<div class="buttonshadow buttonshadow2"></div>
+	<div class="buttonshadow buttonshadow3"></div>
+	<div class="buttonshadow buttonshadow4"></div>
+	<div class="button dockbutton1 buttonbadged"><img src="images/icon33a.png"><img src="images/icon33aflipped.png" class=flipped><p>Mail</p></div>
+	<div class="button dockbutton2"><img src="images/icon32.png"><img src="images/icon32flipped.png" class=flipped><p>Messages</p></div>
+	<div class="button dockbutton3"><img src="images/icon31.png"><img src="images/icon31flipped.png" class=flipped><p>Phone</p></div>
+	<div class="button dockbutton4"><img src="images/icon30.png"><img src="images/icon30flipped.png" class=flipped><p>Calendar</p></div>
+	<img src="images/dockhilitewithbadge.png" id=dockhilite1 class="dockhilite dockhilitebadged">
+	<img src="images/dockhilite.png" id=dockhilite2 class=dockhilite>
+	<img src="images/dockhilite.png" id=dockhilite3 class=dockhilite>
+	<img src="images/dockhilite.png" id=dockhilite4 class=dockhilite>
+</div>
+<div id=pagemarkers>
+	<div id=searchicon></div>
+	<div class=pagemarker id=pagemarker1></div>
+	<div class=pagemarker id=pagemarker2></div>
+</div>
+<div id=console></div>
+</body>
+</html>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery.noConflict();
+/* Copyright 2008 Eric Seidel <eric@webkit.org> */
+/* Portions derived from box2d demos copyright 2006-2007 Erin Catto */
+/* LICENSE: Um, do whatever you want with it.  Don't break Erin's license.  Don't sue me.  Don't hurt nobody, yahear? */
+function createWorld(width, height) {
+	var worldAABB = new b2AABB();
+	var maxCoord = 2 * Math.max(width, height);
+	worldAABB.minVertex.Set(-maxCoord, -maxCoord);
+	worldAABB.maxVertex.Set(maxCoord, maxCoord);
+	var gravity = new b2Vec2(0, 550);
+	var doSleep = true;
+	var world = new b2World(worldAABB, gravity, doSleep);
+	createGround(world, width, height);
+	var halfHeight = height / 2;
+	var halfWidth = width / 2
+	var wallWidth = 10;
+	var visableWall = 5;
+	createBox(world, -wallWidth, halfHeight, wallWidth / 2, halfHeight);
+	createBox(world, width, halfHeight, wallWidth / 2, halfHeight);
+	return world;
+}
+function createGround(world, width, height) {
+	var groundThickness = 500;
+	var visableGround = 5;
+	var groundSd = new b2BoxDef();
+	groundSd.extents.Set(width, groundThickness);
+	groundSd.restitution = 0.2;
+	var groundBd = new b2BodyDef();
+	groundBd.AddShape(groundSd);
+	groundBd.position.Set(0, height + groundThickness - visableGround);
+	return world.CreateBody(groundBd);
+}
+function createBox(world, x, y, width, height, fixed) {
+	if (typeof(fixed) == 'undefined') fixed = true;
+	var boxSd = new b2BoxDef();
+	if (!fixed) boxSd.density = 1.0;
+	boxSd.extents.Set(width, height);
+	var boxBd = new b2BodyDef();
+	boxBd.AddShape(boxSd);
+	boxBd.position.Set(x,y);
+	return world.CreateBody(boxBd);
+}
+function addShapesForElement(bodyDef, element) {
+	var boxSd = new b2BoxDef();
+	boxSd.density = 1 + Math.random() * 5;
+	var halfWidth = element.offsetWidth / 2;
+	var halfHeight = element.offsetHeight / 2;
+	boxSd.extents.Set(halfWidth, halfHeight);
+	bodyDef.AddShape(boxSd);
+	var pos = Element.cumulativeOffset(element);
+	var center = { x: pos.left + halfWidth, y: pos.top + halfHeight };
+	bodyDef.position.Set(center.x, center.y);
+	element.originalCenter = center;
+}
+function createBodyForElement(world, element) {
+	var bodyDef = new b2BodyDef();
+	addShapesForElement(bodyDef, element);
+	element.style.zIndex = "10000"; 
+	bodyDef.userData = element;
+	return world.CreateBody(bodyDef);
+}
+function elementsWithTag(tag) {
+	var elements = document.getElementsByTagName(tag);
+	return elements;
+}
+var tagsToTry = ['img', 'p'];
+// fisherYatesShuffle taken from: http://sedition.com/perl/javascript-fy.html
+function fisherYatesShuffle(array) {
+	var i = array.length;
+	if (!i)
+		return false;
+	while (--i) {
+		var j = Math.floor(Math.random() * (i + 1));
+		var tempi = array[i];
+		var tempj = array[j];
+		array[i] = tempj;
+		array[j] = tempi;
+	}
+}
+function elementsToAnimate() {
+	var elements = [];
+	for (var x = 0; x < tagsToTry.length && elements.length < 500; x++) {
+		var newElements;
+		if (newElements = elementsWithTag(tagsToTry[x])) {
+			for (var y = 0; y < newElements.length; y++) {
+				elements.push(newElements[y]);
+			}
+		}
+	}
+	fisherYatesShuffle(elements);
+	elements = elements.slice(0, 10000);
+	return elements;
+}
+function initWorld(world) {
+	var elements = elementsToAnimate();
+	for (var i = 0; i < elements.length; i++) {
+		createBodyForElement(world, elements[i]);
+	}
+}
+function positionElementToMatchBody(element, body) {
+	var newPos = body.m_position;
+	var rot = body.m_rotation;
+	var startCenter = element.originalCenter;
+	var adjX = newPos.x - startCenter.x;
+	var adjY = newPos.y - startCenter.y;
+	var transform = "translate(" + adjX + "px, " + adjY + "px) rotate(" + rot + "rad)";
+	element.style.webkitTransform = transform;
+}
+function updateMiniMap(world, context) {
+context.save();
+	context.scale(worldToCanvasXScale, worldToCanvasYScale);
+	context.restore();
+}
+function updateElementPositions(world) {
+	for (var b = world.m_bodyList; b; b = b.m_next) {
+		if (b.m_userData) {
+			var element = b.m_userData;
+			positionElementToMatchBody(element, b);
+		}
+	}
+}
+function drawShape(shape, context) {
+	context.strokeStyle = '#ffffff';
+	context.beginPath();
+	context.strokeWidth = "5px";
+	switch (shape.m_type) {
+	case b2Shape.e_polyShape:
+		{
+			var poly = shape;
+			var tV = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[0]));
+			context.moveTo(tV.x, tV.y);
+			for (var i = 0; i < poly.m_vertexCount; i++) {
+				var v = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[i]));
+				context.lineTo(v.x, v.y);
+			}
+			context.lineTo(tV.x, tV.y);
+		}
+		break;
+	}
+	context.stroke();
+}
+var lastStep = null;
+function step(cnt) {
+	var newTime = new Date;
+	var stepping = false;
+	var timeStep = lastStep ? (newTime - lastStep) / 1000 : 1.0/60;
+	var iteration = 1;
+	world.Step(timeStep, iteration);
+	updateElementPositions(world);
+	var haveMovingObject = false;
+	for (var b = world.m_bodyList; b; b = b.m_next) {
+		if (!(b.IsSleeping() || b.IsFrozen() || b.IsStatic())) {
+			haveMovingObject = true;
+			break;
+		}
+	}
+	lastStep = new Date;
+	if (haveMovingObject)
+		setTimeout('step(' + (cnt || 0) + ')', 10);
+}
+var world;
+var worldToCanvasXScale = 1.0;
+var worldToCanvasYScale = 1.0;
+var applyGravity = function() {
+	var worldHeight = document.viewport.getHeight();
+	var worldWidth = document.viewport.getWidth();
+	world = createWorld(worldWidth, worldHeight);
+	initWorld(world);
+	step();
+}
+	var $j = jQuery;
+	var userAgent = navigator.userAgent,
+		body = $j('body'),
+		pages = $j('#pages'),
+		page = $j('.page'),
+		page1 = $j('#page1'),
+		pagemarker1 = $j('#pagemarker1'),
+		pagemarker2 = $j('#pagemarker2'),
+		button = $j('.button'),
+		dockhilite = $j('.dockhilite'),
+		flipped = $j('.flipped'),
+		buttonicon = $j('.button').find('img'),
+		nondockbuttonicon = pages.find('.button').find('img'),
+		pageOffsets = [],
+		logit = function(x) { $j('#console').css({'background': '#000'});$j('#console').append(x + '<br>'); },
+		difference = function (a, b) { return Math.abs(a - b) },
+		curPage = 1,
+		pagesWidth = 0,
+		touchStart,
+		touchMoved = 0,
+		dockTouchMoved = 0,
+		pressed = 0,
+		pressedIcon,
+		touchMoveDiff = 0,
+		touchMoveDiff2 = 0,
+		prevEventPageX = 0
+		;
+	page.each(function(){
+		pageOffsets.push($j(this).offset().left);
+		pagesWidth += $j(this).width();
+	});
+	pageOffsets.shift();
+	var buttonAction = function(){
+		var leftPos;
+		if (pages.scrollLeft() < 960) { leftPos = -640; } else { leftPos = -1280 }
+		pages.scrollLeft(0);
+		pages.css({'overflow': 'visible', 'left': leftPos});
+		$j('#dock').css({'overflow': 'visible'});
+		$j('.buttonshadow').remove();
+		dockhilite.remove();
+		$j('p').animate({'width': 114, 'left': 0}, {'duration': 500});
+		flipped.animate({'opacity': 0}, {'duration': 200, 'complete': function(){
+			$j(this).remove();
+		}});
+		applyGravity();
+		buttonAction = '';
+		scrollSnap = '';
+		scrollMomentumThrow = '';
+		buttonicon.unbind('touchstart');
+		buttonicon.unbind('touchend');
+		dockhilite.unbind('touchstart');
+		dockhilite.unbind('touchmove');
+		dockhilite.unbind('touchend');
+		pages.unbind('touchstart');
+		pages.unbind('touchmove');
+		pages.unbind('touchend');
+		$j(window).unbind('scrollstop');
+		$j(window).unbind('touchstart');
+		$j(window).unbind('touchmove');
+		$j(window).unbind('touchend');
+		$j(window).bind('touchstart', function(e){e.preventDefault();});
+		$j(window).bind('touchmove', function(e){e.preventDefault();});
+	}
+	var scrollSnap = function() {
+		var	curOffset = pages.scrollLeft(),
+			closest = null;
+		$j.each(pageOffsets, function(){
+			if (closest == null || Math.abs(this - curOffset) < Math.abs(closest - curOffset)) {
+				closest = this;
+			}
+		});
+		if (difference(curOffset, closest) >= 2) {
+			pages.animate({scrollLeft: closest}, {'duration': 200, 'queue': false, 'complete': function(){
+				if (closest == 640){
+					pagemarker1.css({'background-position': '0 0'});
+					pagemarker2.css({'background-position': '0 12px'});
+				} else {
+					pagemarker1.css({'background-position': '0 12px'});
+					pagemarker2.css({'background-position': '0 0'});
+				}
+			}});
+		}
+	}
+	var scrollMomentumThrow = function(distance){
+		var curDistance = distance;
+		var throwPage = setInterval(function(){
+			if (pressed == 1) {
+				clearInterval(throwPage);
+			}
+			pages.scrollLeft(pages.scrollLeft() + curDistance);
+			curDistance = curDistance / 1.3;
+			if (curDistance < 4 && curDistance > -4) {
+				clearInterval(throwPage);
+				scrollSnap();
+			}
+		}, 4);
+	}
+	buttonicon.bind('touchstart', function(){
+		$j(this).css({'opacity': .6});
+		pressedIcon = $j(this);
+	});
+	buttonicon.bind('touchend', function(){
+		$j(this).css({'opacity': 1});
+		if (touchMoved === 0){
+			buttonAction();
+		}
+	});
+	dockhilite.bind('touchstart', function(){
+		$j(this).css({'opacity': 1});
+		dockTouchMoved = 0;
+	});
+	dockhilite.bind('touchmove', function(){
+		dockTouchMoved = 1;
+	});
+	dockhilite.bind('touchend', function(){
+		$j(this).css({'opacity': 0});
+		if (dockTouchMoved === 0){
+			buttonAction();
+		}
+	});
+	pages.bind('touchstart', function(e){
+		pages.stop(true, true);
+		touchStart = e;
+		pagesCurScrollLeft = pages.scrollLeft();
+		pressed = 1;
+		touchMoved = 0;
+	});
+	pages.bind('touchmove', function(e){
+		touchMoveDiff = e.pageX - touchStart.pageX;
+		touchMoveDiff2 = prevEventPageX - e.pageX;
+		if (touchMoved !== 1 && touchMoveDiff2 !== 0) {
+			touchMoved = 1;
+		}
+		prevEventPageX = e.pageX;
+		pages.scrollLeft(pagesCurScrollLeft - touchMoveDiff);
+		pressedIcon.css({'opacity': 1});
+	});
+	pages.bind('touchend', function(e){
+		pressed = 0;
+		if(touchMoveDiff2 > 5 || touchMoveDiff2 < -5){
+			touchMoveDiff2 = touchMoveDiff2 > 64 ? 64 : touchMoveDiff2 < -64 ? -64 : touchMoveDiff2;
+			scrollMomentumThrow(touchMoveDiff2);
+		} else {
+			scrollSnap();
+		}
+		touchMoveDiff2 = 0;
+	});
+	$j(window).bind('load', function(){
+		pages.animate({scrollLeft: 640}, {'duration': 1, 'queue': false});
+		$j('#loading').remove();
+	});
+	if($j(window).height() < 920) {
+		if (orientation == 0 || orientation == 180){
+			$j('#addto1').css({'display': 'block'});
+			$j('#addto2').css({'display': 'none'});
+		} else {
+			$j('#addto1').css({'display': 'none'});
+			$j('#addto2').css({'display': 'block'});
+		}
+		$j(window).bind('orientationchange', function(e){
+			if (orientation == 0 || orientation == 180){
+				$j('#addto1').css({'display': 'block'});
+				$j('#addto2').css({'display': 'none'});
+			} else {
+				$j('#addto1').css({'display': 'none'});
+				$j('#addto2').css({'display': 'block'});
+			}
+		});
+		$j('#loading').remove();
+		$j('#rotatemessage').remove();
+	} else {
+		if (orientation == 0 || orientation == 180){
+			$j('#rotatemessage').css({'display': 'none'});
+		} else {
+			$j('#rotatemessage').css({'display': 'block'});
+		}
+		$j(window).bind('orientationchange', function(e){
+			if (orientation == 0 || orientation == 180){
+				$j('#rotatemessage').css({'display': 'none'});
+			} else {
+				$j('#rotatemessage').css({'display': 'block'});
+			}
+		});
+		$j('#addtohomescreen').remove();
+	}
+	$j(window).bind('touchstart', function(e){ e.preventDefault(); });
+	$j(window).bind('touchmove', function(e){
+		e.preventDefault();
+		if(pages.scrollLeft() < 640){
+			var x = ((110 - ((640 - pages.scrollLeft()) / 6)) / 100).toFixed(2);
+			x = x > 1 ? 1 : x < .35 ? .35 : x;
+			page1.css({'opacity': x});
+		}
+	});
+	$j(window).bind('touchend', function(e){
+		e.preventDefault();
+		page1.animate({'opacity': 1}, {'queue': false});
+	});
+	var animateSprite = function(div, spritePositions, speed, duration, steps, endSpritePosition, deleteOnEnd) {
+		var curPosition = 0,
+			curStep = 0,
+			incrementCheck = div.animIncrement >= 0 ? div.animIncrement + 1 : 0;
+		div.animIncrement = incrementCheck;
+		var animateSpriteInterval = setInterval(function() {
+			if (div.animIncrement !== incrementCheck) {
+				clearInterval(animateSpriteInterval);
+				clearTimeout(animteSpriteDuration);
+				div.css({'background-position': endSpritePosition[0] + ' ' + endSpritePosition[1]});
+				if (deleteOnEnd === 1) {div.remove();}
+			}
+			div.css({'background-position': spritePositions[curPosition][0] + ' ' + spritePositions[curPosition][1]});
+			if (steps > 0) {
+				if (curStep < steps) {
+					curPosition = curPosition < spritePositions.length - 1 ? curPosition + 1 : 0;
+					curStep = curStep + 1;
+				} else {
+					clearInterval(animateSpriteInterval);
+					div.css({'background-position': endSpritePosition[0] + ' ' + endSpritePosition[1]});
+					if (deleteOnEnd === 1) {div.remove();}
+				}
+			} else {
+				curPosition = curPosition < spritePositions.length - 1 ? curPosition + 1 : 0;
+			}
+		}, speed);
+		if (duration > 0) {
+			var animteSpriteDuration = setTimeout (function() {
+				clearInterval(animateSpriteInterval);
+				div.css({'background-position': endSpritePosition[0] + ' ' + endSpritePosition[1]});
+				if (deleteOnEnd === 1) {div.remove();}
+			}, duration);
+		}
+	}
+});
+</script>
